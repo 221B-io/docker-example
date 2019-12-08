@@ -1,0 +1,36 @@
+version: '3'
+services:
+  server:
+    build: server/.
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.server.rule=PathPrefix(`/api`)"
+    networks:
+      pub lic:
+  ssr:
+    build: client/.
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ssr.rule=PathPrefix(`/`)"
+    networks:
+      public:
+  traefik:
+    # The official v2.0 Traefik docker image
+    image: traefik:v2.0
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      public:
+      internal:
+networks:
+  internal:
+    internal: true
+  public:

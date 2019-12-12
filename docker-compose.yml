@@ -6,7 +6,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.server.rule=PathPrefix(`/api`)"
     networks:
-      pub lic:
+      public:
   ssr:
     build: client/.
     labels:
